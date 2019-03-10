@@ -39,8 +39,23 @@ class MyXBOXFriendDevice extends Homey.Device {
                 }
             });
         this.pollXboxFriendDevice(settings);
-
+        this._flowTriggerIsOnline = new Homey.FlowCardTrigger('IsOnline').register();
+        this._flowTriggerIsOffline = new Homey.FlowCardTrigger('IsOffline').register();
 	}
+
+    // flow triggers
+    flowTriggerIsOnline(tokens) {
+        this._flowTriggerIsOnline
+            .trigger(tokens)
+            .then(this.log("flowTriggerIsOnline"))
+            .catch(this.error)
+    }
+    flowTriggerIsOffline(tokens) {
+        this._flowTriggerIsOffline
+            .trigger(tokens)
+            .then(this.log("flowTriggerIsOffline"))
+            .catch(this.error)
+    }
 
 
     onDeleted() {
@@ -63,6 +78,16 @@ class MyXBOXFriendDevice extends Homey.Device {
             if (data != null){
                 // console.log("last date " +  strUpdateDate.substring(11,24));
                 if (data != null){
+                    let tokens = {
+                        "device": settings.name
+                    };
+
+                    if ( this.getCapabilityValue('onoff') == true && data.state == 'Offline' ) {
+                        this.flowTriggerIsOffline(tokens);
+                    }
+                    if ( this.getCapabilityValue('onoff') == false && data.state == 'Online' ) {
+                        this.flowTriggerIsOnline(tokens);
+                    }
                     if (data.state == 'Offline') {
                         this.setCapabilityValue('onoff', false);
                         this.setCapabilityValue('last_seen_date',data.lastSeen.timestamp.substring(11,24));
@@ -75,6 +100,7 @@ class MyXBOXFriendDevice extends Homey.Device {
                             this.setCapabilityValue('last_seen_date',"");
                         }
                     }
+
                     this.setCapabilityValue('latest_update_date', currentdate);
                 }
             }

@@ -58,6 +58,52 @@
 			"setable": false
     }    
   },
+	"flow": {
+		"triggers": [
+      {
+				"id": "IsOnline",
+				"title": {
+					"en": "When a XBOX friend is online"
+				},
+				"hint": {
+					"en": "Triggers when a XBOX friend is online"
+				},
+				"tokens": [
+          {
+						"name": "friend",
+						"type": "string",
+						"title": {
+							"en": "Friend"
+						},
+						"example": {
+							"en": "My XBOX friend"
+						}
+					}
+				]
+      },
+      {
+				"id": "IsOffline",
+				"title": {
+					"en": "When a XBOX friend is offline"
+				},
+				"hint": {
+					"en": "Triggers when a XBOX friend is offline"
+				},
+				"tokens": [
+          {
+						"name": "friend",
+						"type": "string",
+						"title": {
+							"en": "Friend"
+						},
+						"example": {
+							"en": "My XBOX friend"
+						}
+					}
+				]
+      }
+    ]
+  },      
   "drivers": [
     {
       "id": "friend",
