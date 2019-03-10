@@ -1,0 +1,96 @@
+{
+  "id": "com.athom.xbox",
+  "version": "0.0.1",
+  "compatibility": ">=1.5.0",
+  "sdk": 2,
+  "name": {
+    "en": "XBOX"
+  },
+  "description": {
+    "en": "Find current status of your XBOX friends"
+  },
+  "category": [
+    "internet"
+  ],
+  "permissions": [],
+  "images": {
+    "large": "/assets/images/large.png",
+    "small": "/assets/images/small.png"
+  },
+  "author": {
+    "name": "Edwin Biemond",
+    "email": "biemond@gmail.com"
+  },
+	"capabilities": {
+		"latest_update_date": {
+			"type": "string",
+			"title": {
+				"en": "Latest update date"
+			},
+			"getable": true,
+			"setable": false,
+			"icon": "/assets/images/clock.svg"
+    },
+		"onoff": {
+			"type": "boolean",
+			"title": {
+				"en": "Is online"
+			},
+			"getable": true,
+      "setable": false,
+      "uiQuickAction": true     
+    },
+		"last_seen_date": {
+			"type": "string",
+			"title": {
+				"en": "Last seen date UTC"
+			},
+			"getable": true,
+			"setable": false,
+			"icon": "/assets/images/clock.svg"
+    },
+    "activity": {
+			"type": "string",
+			"title": {
+				"en": "Current activity"
+			},
+			"getable": true,
+			"setable": false
+    }    
+  },
+  "drivers": [
+    {
+      "id": "friend",
+      "name": {
+        "en": "XBOX Friend"
+      },
+      "pair": [
+          {
+            "id": "list_devices",
+            "template": "list_devices",
+            "navigation": {
+              "next": "add_devices"
+            },
+            "options": {
+              "singular": true
+            }
+          },
+          {
+            "id": "add_devices",
+            "template": "add_devices"
+          }
+		  ],
+      "class": "other",
+      "capabilities": [
+        "latest_update_date",
+        "onoff",
+        "last_seen_date",
+        "activity"
+      ],
+      "images": {
+        "large": "/drivers/friend/assets/images/friend_large.png",
+        "small": "/drivers/friend/assets/images/friend_small.png"
+      }
+    }
+  ]
+}
