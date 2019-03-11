@@ -41,7 +41,12 @@ class MyXBOXFriendDevice extends Homey.Device {
         this.pollXboxFriendDevice(settings);
         this._flowTriggerIsOnline = new Homey.FlowCardTrigger('IsOnline').register();
         this._flowTriggerIsOffline = new Homey.FlowCardTrigger('IsOffline').register();
-	}
+
+        this._conditionIsOnline = new Homey.FlowCardCondition('is_online').register().registerRunListener((args, state) => {
+            let result = this.getCapabilityValue('onoff') 
+            return Promise.resolve(result);
+        }); 
+    }
 
     // flow triggers
     flowTriggerIsOnline(tokens) {

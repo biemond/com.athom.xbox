@@ -102,6 +102,23 @@
 					}
 				]
       }
+    ],
+		"conditions": [
+      {
+        "id": "is_online",
+        "title": {
+          "en": "Friend !{{is|isn't}} online"
+        },
+        "hint": {
+          "en": "Friend's online status"
+        },
+        "args": [{
+            "name": "friend",
+            "type": "device",
+            "filter": "driver_id=friend"
+          }
+        ]
+      }
     ]
   },      
   "drivers": [

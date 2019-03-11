@@ -16,3 +16,7 @@ When you go this page https://xboxapi.com/ you can signup for a free or paid acc
 
 - IsOnline
 - IsOffline
+
+### conditions
+
+- IsOnline
