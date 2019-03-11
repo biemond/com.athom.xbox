@@ -84,7 +84,7 @@ class MyXBOXFriendDevice extends Homey.Device {
                 // console.log("last date " +  strUpdateDate.substring(11,24));
                 if (data != null){
                     let tokens = {
-                        "device": settings.name
+                        "friend": settings.name
                     };
 
                     if ( this.getCapabilityValue('onoff') == true && data.state == 'Offline' ) {
