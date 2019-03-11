@@ -95,7 +95,7 @@ class MyXBOXFriendDevice extends Homey.Device {
                     }
                     if (data.state == 'Offline') {
                         this.setCapabilityValue('onoff', false);
-                        this.setCapabilityValue('last_seen_date',data.lastSeen.timestamp.substring(11,24));
+                        this.setCapabilityValue('last_seen_date',data.lastSeen.timestamp);
                     } else {
                         this.setCapabilityValue('onoff', true);
                         if (data.devices[0].titles[1] != null) {
