@@ -5,7 +5,7 @@ const XboxOn = require('xbox-on');
 
 const xbox_options = {
     tries: 5,
-    delay: 1000,
+    delay: 100,
     waitForCallback: false
   };
 
