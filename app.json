@@ -154,6 +154,57 @@
         "large": "/drivers/friend/assets/images/friend_large.png",
         "small": "/drivers/friend/assets/images/friend_small.png"
       }
+    },
+    {
+      "id": "xboxone",
+      "name": {
+        "en": "Xbox One",
+        "nl": "Xbox One"
+      },
+      "images": {
+        "large": "/drivers/xboxone/assets/images/large.png",
+        "small": "/drivers/xboxone/assets/images/small.png"
+      },
+      "class": "other",
+      "capabilities": [ "button" ],
+      "pair": [
+        {
+          "id": "index"
+        }
+      ],
+      "settings": [
+        {
+          "type": "group",
+          "label": {
+              "en": "Xbox One",
+              "nl": "Xbox One"
+          },
+          "children": [
+            {
+              "id": "address",
+              "type": "text",
+              "value": "",
+              "label": {
+                  "en": "IP-Address",
+                  "nl": "IP-Adres"
+              },
+              "hint": {
+                "en": "On your Xbox, go to Settings > Network > Network Settings > Advanced Settings",
+                "nl": "Op de Xbox, ga naar Opties > Netwerk > Netwerk instellingen > Geadvanceerde instellingen"
+              }
+            },
+            {
+              "id": "live_id",
+              "type": "label",
+              "value": "",
+              "label": {
+                  "en": "Xbox Live ID",
+                  "nl": "Xbox Live ID"
+              }
+            }
+          ]
+        }
+      ]
     }
   ]
 }
