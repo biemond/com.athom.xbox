@@ -19,17 +19,6 @@ class XboxDriver extends Homey.Driver {
 
   _initFlow(){
     this.log("init Flows");
-    
-    // Register turn_on Flow action
-    let turnXboxOn = new Homey.FlowCardAction('turn_on');
-    turnXboxOn
-      .register()
-      .registerRunListener(( args, state ) => {
-        this.log("Running flow turn_on");
-
-        args.xbox.triggerCapabilityListener('onoff', true);
-        return Promise.resolve();
-      });
   }
 
 
