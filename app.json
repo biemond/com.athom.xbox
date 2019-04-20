@@ -7,10 +7,11 @@
     "en": "XBOX"
   },
   "description": {
-    "en": "Find current status of your XBOX friends"
+    "en": "Find current status of your XBOX friends and turn on your Xbox One"
   },
   "category": [
-    "internet"
+    "internet",
+    "appliances"
   ],
   "permissions": [],
   "images": {
@@ -20,6 +21,22 @@
   "author": {
     "name": "Edwin Biemond",
     "email": "biemond@gmail.com"
+  },
+  "contributors": {
+    "developers": [
+      {
+        "name": "Edwin Biemond",
+        "email": "biemond@gmail.com"
+      },
+      {
+        "name": "Roy K",
+        "email": "rkokk@protonmail.com"
+      },
+      {
+        "name": "Emile Nijssen",
+        "email": "emilenijssen@gmail.com"
+      }
+    ]
   },
 	"capabilities": {
 		"latest_update_date": {
