@@ -18,7 +18,7 @@ class XboxDevice extends Homey.Device {
     this.log('class:', this.getClass());
 
     // Register homey default capability onoff
-    this.registerCapabilityListener('onoff', this.onCapabilityOnoff.bind(this));
+    this.registerCapabilityListener('button', this.onCapabilityButton.bind(this));
     
   }
 
@@ -33,40 +33,33 @@ class XboxDevice extends Homey.Device {
   }
 
   // this method is called when the Device has requested a state change (turned on or off)
-  onCapabilityOnoff( value, opts, callback) {
-    this.log("Turning Onoff: "+value);
+  onCapabilityButton( value, opts, callback) {
+    this.log("Xbox one button press");
 
     let settings = this.getSettings();
 
-    if (value == true){
+    try {
 
-      try {
+      let xbox = new XboxOn( settings['address'], settings['live_id'] );
+      this.log("Created xbox object ["+settings['address']+"] ("+settings['live_id']+")");
 
-        let xbox = new XboxOn( settings['address'], settings['live_id'] );
-        this.log("Created xbox object ["+settings['address']+"] ("+settings['live_id']+")");
+      xbox.powerOn( xbox_options, ( err ) => {
 
-        xbox.powerOn( xbox_options, ( err ) => {
+        if( err ) {
+          this.log('Xbox powerOn failed: ', err)
+          return Promise.reject( err );
+        }
 
-          if( err ) {
-            this.log('Xbox powerOn failed: ', err)
-            return Promise.reject( err );
-          }
+        // Then, emit a callback ( err, result )
+        this.log('Xbox powerOn succeeded')
+        return Promise.resolve();
+      });
 
-          // Then, emit a callback ( err, result )
-          this.log('Xbox powerOn succeeded')
-          return Promise.resolve();
-        });
-
-      } catch( err ) {
-        // or, return a Promise
-        this.log('Xbox powerOn unknown error: ', err)
-        return Promise.reject( err );
-      }
-
-    } else {
-      this.log('Xbox tried powerOff')
-      return Promise.reject( new Error('off_not_implemented') );
-    } 
+    } catch( err ) {
+      // or, return a Promise
+      this.log('Xbox powerOn unknown error: ', err)
+      return Promise.reject( err );
+    }
   }
 }
 
