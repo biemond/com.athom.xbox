@@ -7,10 +7,11 @@
     "en": "XBOX"
   },
   "description": {
-    "en": "Find current status of your XBOX friends"
+    "en": "Find current status of your XBOX friends and turn on your Xbox One"
   },
   "category": [
-    "internet"
+    "internet",
+    "appliances"
   ],
   "permissions": [],
   "images": {
@@ -20,6 +21,22 @@
   "author": {
     "name": "Edwin Biemond",
     "email": "biemond@gmail.com"
+  },
+  "contributors": {
+    "developers": [
+      {
+        "name": "Edwin Biemond",
+        "email": "biemond@gmail.com"
+      },
+      {
+        "name": "Roy K",
+        "email": "rkokk@protonmail.com"
+      },
+      {
+        "name": "Emile Nijssen",
+        "email": "emilenijssen@gmail.com"
+      }
+    ]
   },
 	"capabilities": {
 		"latest_update_date": {
@@ -154,6 +171,57 @@
         "large": "/drivers/friend/assets/images/friend_large.png",
         "small": "/drivers/friend/assets/images/friend_small.png"
       }
+    },
+    {
+      "id": "xboxone",
+      "name": {
+        "en": "Xbox One",
+        "nl": "Xbox One"
+      },
+      "images": {
+        "large": "/drivers/xboxone/assets/images/large.png",
+        "small": "/drivers/xboxone/assets/images/small.png"
+      },
+      "class": "other",
+      "capabilities": [ "button" ],
+      "pair": [
+        {
+          "id": "index"
+        }
+      ],
+      "settings": [
+        {
+          "type": "group",
+          "label": {
+              "en": "Xbox One",
+              "nl": "Xbox One"
+          },
+          "children": [
+            {
+              "id": "address",
+              "type": "text",
+              "value": "",
+              "label": {
+                  "en": "IP-Address",
+                  "nl": "IP-Adres"
+              },
+              "hint": {
+                "en": "On your Xbox, go to Settings > Network > Network Settings > Advanced Settings",
+                "nl": "Op de Xbox, ga naar Opties > Netwerk > Netwerk instellingen > Geadvanceerde instellingen"
+              }
+            },
+            {
+              "id": "live_id",
+              "type": "label",
+              "value": "",
+              "label": {
+                  "en": "Xbox Live ID",
+                  "nl": "Xbox Live ID"
+              }
+            }
+          ]
+        }
+      ]
     }
   ]
 }
