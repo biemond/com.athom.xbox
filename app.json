@@ -1,6 +1,6 @@
 {
   "id": "com.athom.xbox",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "compatibility": ">=2.0.5",
   "sdk": 2,
   "name": {
@@ -167,6 +167,12 @@
         "last_seen_date",
         "activity"
       ],
+      "energy": {
+        "approximation": {
+          "usageOn": 0, 
+          "usageOff": 0
+        }
+      },
       "images": {
         "large": "/drivers/friend/assets/images/friend_large.png",
         "small": "/drivers/friend/assets/images/friend_small.png"
