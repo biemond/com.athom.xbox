@@ -1,6 +1,6 @@
 {
   "id": "com.athom.xbox",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "compatibility": ">=2.0.5",
   "sdk": 2,
   "name": {
@@ -9,6 +9,18 @@
   "description": {
     "en": "Find current status of your XBOX friends and turn on your Xbox One"
   },
+	"tags": {
+		"en": [
+			"xbox",
+			"microsoft",
+			"friends"
+		]
+  },  
+  "bugs": {
+		"url": "https://github.com/biemond/com.athom.xbox/issues"
+	},
+	"source": "https://github.com/biemond/com.athom.xbox",
+	"support": "mailto:biemond@gmail.com",  
   "category": [
     "internet",
     "appliances"
