@@ -8,15 +8,7 @@ Use this app to turn on your Xbox one using an Athom Homey flow or your smartpho
 _Power off is not supported at the moment._
 
 Retrieving the required XBOXApi token
-When you go this page https://xboxapi.com/ you can signup for a free or paid account, it detects how many requests you do in a hour ( max of 60 api requests a hour when you go for a free account)
-
-Flows
-triggers
-- IsOnline
-- IsOffline
-
-conditions
-- IsOnline
+When you go this page https://xapi.us/ you can signup for a free or paid account, it detects how many requests you do in a hour ( max of 60 api requests a hour when you go for a free account)
 
 Thanks 
 Part of the turn on functionality has been developed by [Emile Nijssen](https://github.com/WeeJeWel). See the original repository for more information: [xboxone](https://github.com/WeeJeWel/net.weejewel.xboxone).

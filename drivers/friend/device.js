@@ -14,15 +14,24 @@ class MyXBOXFriendDevice extends Homey.Device {
 		this.log('MyXBOXFriendDevice has been inited');
 
         let settings = this.getData();
-		this.log("settings " + settings);
-        let name = this.getData().id;
+        let apikey = ManagerSettings.get('apikey')
+		console.log("key " + apikey);
+        settings.apikey = apikey;
+        console.log("settings " +  JSON.stringify(settings));
         let cronName = this.getData().id;
-
-
+ 
         Homey.ManagerCron.getTask(cronName)
             .then(task => {
                 this.log("The task exists: " + cronName);
-                task.on('run', settings => this.pollXboxFriendDevice(settings));
+                this.log('Unregistering cron:', cronName);
+                Homey.ManagerCron.unregisterTask(cronName, function (err, success) {});
+                Homey.ManagerCron.registerTask(cronName, "*/10 * * * *", settings)
+                .then(task => {
+                    task.on('run', settings => this.pollXboxFriendDevice(settings));
+                })
+                .catch(err => {
+                    this.log('problem with registering cronjob: ${err.message}');
+                });            
             })
             .catch(err => {
                 if (err.code == 404) {
@@ -38,6 +47,7 @@ class MyXBOXFriendDevice extends Homey.Device {
                     this.log('other cron error: ${err.message}');
                 }
             });
+
         this.pollXboxFriendDevice(settings);
         this._flowTriggerIsOnline = new Homey.FlowCardTrigger('IsOnline').register();
         this._flowTriggerIsOffline = new Homey.FlowCardTrigger('IsOffline').register();

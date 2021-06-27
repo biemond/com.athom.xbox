@@ -5,7 +5,7 @@
     var http = require('http.min');
     var options = {
         protocol: 'https:',
-        hostname: 'xboxapi.com',
+        hostname: 'xapi.us',
         path: '/dummy',
         headers: {}
     };
@@ -29,6 +29,7 @@
     }
 
     xboxapi.getFriends = function getFriends(settings) {
+        console.log("settings " +  JSON.stringify(settings));
         let url = '/v2/' + settings.userId + '/friends';
 
         return new Promise((resolve, reject) => {
@@ -43,6 +44,7 @@
     }
 
     xboxapi.getFriendCurrentData = function getFriendCurrentData(settings) {
+        console.log("settings " +  JSON.stringify(settings));
         let url = '/v2/' + settings.id + '/presence';
 
         return new Promise((resolve, reject) => {

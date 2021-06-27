@@ -1,6 +1,6 @@
 {
   "id": "com.athom.xbox",
-  "version": "0.0.5",
+  "version": "0.0.6",
   "compatibility": ">=2.0.5",
   "sdk": 2,
   "name": {
@@ -81,7 +81,7 @@
     "activity": {
 			"type": "string",
 			"title": {
-				"en": "Current activity"
+				"en": "Last/Current activity"
 			},
 			"getable": true,
 			"setable": false
