@@ -14,7 +14,7 @@ _Power off is not supported at the moment._
 
 ### Retrieving the required XBOXApi token
 
-When you go this page https://xboxapi.com/ you can signup for a free or paid account, it detects how many requests you do in a hour ( max of 60 api requests a hour when you go for a free account)
+When you go this page https://xapi.us/ you can signup for a free or paid account, it detects how many requests you do in a hour ( max of 60 api requests a hour when you go for a free account)
 
 ## Flows
 
