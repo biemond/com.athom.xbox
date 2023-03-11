@@ -1,6 +1,6 @@
 {
     "settings": {
       "title": "XBOX Settings Page",
-      "subtitle": "Please provide the api key from xboxapi.com"
+      "subtitle": "Please provide the api key from xbl.io"
     }
 }

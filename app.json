@@ -1,11 +1,15 @@
 {
   "id": "com.athom.xbox",
-  "version": "0.0.6",
-  "compatibility": ">=2.0.5",
-  "sdk": 2,
+  "version": "1.0.0",
+  "compatibility": ">=5.0.0",
+  "sdk": 3,
+  "brandColor": "#20df30",
+  "platforms": [
+    "local"
+  ],
   "name": {
     "en": "XBOX"
-  },
+  },  
   "description": {
     "en": "Find current status of your XBOX friends and turn on your Xbox One"
   },
@@ -39,14 +43,6 @@
       {
         "name": "Edwin Biemond",
         "email": "biemond@gmail.com"
-      },
-      {
-        "name": "Roy K",
-        "email": "rkokk@protonmail.com"
-      },
-      {
-        "name": "Emile Nijssen",
-        "email": "emilenijssen@gmail.com"
       }
     ]
   },
@@ -189,57 +185,6 @@
         "large": "/drivers/friend/assets/images/friend_large.png",
         "small": "/drivers/friend/assets/images/friend_small.png"
       }
-    },
-    {
-      "id": "xboxone",
-      "name": {
-        "en": "Xbox One",
-        "nl": "Xbox One"
-      },
-      "images": {
-        "large": "/drivers/xboxone/assets/images/large.png",
-        "small": "/drivers/xboxone/assets/images/small.png"
-      },
-      "class": "other",
-      "capabilities": [ "button" ],
-      "pair": [
-        {
-          "id": "index"
-        }
-      ],
-      "settings": [
-        {
-          "type": "group",
-          "label": {
-              "en": "Xbox One",
-              "nl": "Xbox One"
-          },
-          "children": [
-            {
-              "id": "address",
-              "type": "text",
-              "value": "",
-              "label": {
-                  "en": "IP-Address",
-                  "nl": "IP-Adres"
-              },
-              "hint": {
-                "en": "On your Xbox, go to Settings > Network > Network Settings > Advanced Settings",
-                "nl": "Op de Xbox, ga naar Opties > Netwerk > Netwerk instellingen > Geadvanceerde instellingen"
-              }
-            },
-            {
-              "id": "live_id",
-              "type": "label",
-              "value": "",
-              "label": {
-                  "en": "Xbox Live ID",
-                  "nl": "Xbox Live ID"
-              }
-            }
-          ]
-        }
-      ]
     }
   ]
 }

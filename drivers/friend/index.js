@@ -5,7 +5,7 @@
     var http = require('http.min');
     var options = {
         protocol: 'https:',
-        hostname: 'xapi.us',
+        hostname: 'xbl.io',
         path: '/dummy',
         headers: {}
     };
@@ -15,7 +15,7 @@
     // active functions()  -------------------------------------  active functions()  --------------------------------------------
 
     xboxapi.getUser = function getUser(apikey) {
-        let url = '/v2/accountxuid';
+        let url = '/api/v2/account';
 
         return new Promise((resolve, reject) => {
             getData(url, apikey, (error, jsonobj) => {
@@ -30,7 +30,7 @@
 
     xboxapi.getFriends = function getFriends(settings) {
         console.log("settings " +  JSON.stringify(settings));
-        let url = '/v2/' + settings.userId + '/friends';
+        let url = '/api/v2/friends';
 
         return new Promise((resolve, reject) => {
             getData(url, settings.apikey, (error, jsonobj) => {
@@ -45,7 +45,7 @@
 
     xboxapi.getFriendCurrentData = function getFriendCurrentData(settings) {
         console.log("settings " +  JSON.stringify(settings));
-        let url = '/v2/' + settings.id + '/presence';
+        let url = '/api/v2/' + settings.id + '/presence';
 
         return new Promise((resolve, reject) => {
             getData(url, settings.apikey, (error, jsonobj) => {
@@ -64,7 +64,7 @@
         options.headers = {
             'User-Agent': 'Node.js http.min',
             'Accept': 'application/json',
-            'X-AUTH': token
+            'x-authorization': token
         };
 
         console.log('url ' + url);

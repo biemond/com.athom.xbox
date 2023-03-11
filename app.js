@@ -1,13 +1,11 @@
-'use strict';
-
 const Homey = require('homey');
 
-class MyApp extends Homey.App {
+class MyXBOXApp extends Homey.App {
 	
-	onInit() {
-		this.log('MyApp is running...');
+	async onInit() {
+		this.log('MyXBOXApp is running...');
 	}
 	
 }
 
-module.exports = MyApp;
+module.exports = MyXBOXApp;

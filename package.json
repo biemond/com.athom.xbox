@@ -1,6 +1,5 @@
 {
   "dependencies": {
-    "http.min": "^2.0.1",
-    "xbox-on": "0.0.10"
+    "http.min": "^2.0.1"
   }
 }

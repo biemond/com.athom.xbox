@@ -1,8 +1,8 @@
-'use strict';
-
 const Homey = require('homey');
-const { ManagerSettings } = require('homey');
 const xboxapi = require('./index.js');
+
+const RETRY_INTERVAL = 300 * 1000;
+let timer;
 
 Date.prototype.timeNow = function(){ 
     return ((this.getHours() < 10)?"0":"") + ((this.getHours()>12)?(this.getHours()-12):this.getHours()) +":"+ ((this.getMinutes() < 10)?"0":"") + this.getMinutes() + " " + ((this.getHours()>12)?('PM'):'AM');
@@ -10,80 +10,60 @@ Date.prototype.timeNow = function(){
 
 class MyXBOXFriendDevice extends Homey.Device {
 	
-	onInit() {
+    async onInit() {
 		this.log('MyXBOXFriendDevice has been inited');
 
         let settings = this.getData();
-        let apikey = ManagerSettings.get('apikey')
+        let apikey = this.homey.settings.get('apikey');
 		console.log("key " + apikey);
         settings.apikey = apikey;
         console.log("settings " +  JSON.stringify(settings));
-        let cronName = this.getData().id;
  
-        Homey.ManagerCron.getTask(cronName)
-            .then(task => {
-                this.log("The task exists: " + cronName);
-                this.log('Unregistering cron:', cronName);
-                Homey.ManagerCron.unregisterTask(cronName, function (err, success) {});
-                Homey.ManagerCron.registerTask(cronName, "*/10 * * * *", settings)
-                .then(task => {
-                    task.on('run', settings => this.pollXboxFriendDevice(settings));
-                })
-                .catch(err => {
-                    this.log('problem with registering cronjob: ${err.message}');
-                });            
-            })
-            .catch(err => {
-                if (err.code == 404) {
-                    this.log("The task has not been registered yet, registering task: " + cronName);
-                    Homey.ManagerCron.registerTask(cronName, "*/10 * * * *", settings)
-                        .then(task => {
-                            task.on('run', settings => this.pollXboxFriendDevice(settings));
-                        })
-                        .catch(err => {
-                            this.log('problem with registering cronjob: ${err.message}');
-                        });
-                } else {
-                    this.log('other cron error: ${err.message}');
-                }
-            });
+        timer = this.homey.setInterval(() => {
+            // poll device state from invertor
+            this.pollXboxFriendDevice(settings);
+          }, RETRY_INTERVAL);
 
         this.pollXboxFriendDevice(settings);
-        this._flowTriggerIsOnline = new Homey.FlowCardTrigger('IsOnline').register();
-        this._flowTriggerIsOffline = new Homey.FlowCardTrigger('IsOffline').register();
+        // this._flowTriggerIsOnline = this.homey.flow.getDeviceTriggerCard('IsOnline').register();
+        // this._flowTriggerIsOffline = this.homey.flow.getDeviceTriggerCard('IsOffline').register();
 
-        this._conditionIsOnline = new Homey.FlowCardCondition('is_online').register().registerRunListener((args, state) => {
+        this._conditionIsOnline = this.homey.flow.getConditionCard('is_online').registerRunListener((args, state) => {
             let result = this.getCapabilityValue('onoff') 
             return Promise.resolve(result);
         }); 
     }
 
     // flow triggers
-    flowTriggerIsOnline(tokens) {
-        this._flowTriggerIsOnline
-            .trigger(tokens)
-            .then(this.log("flowTriggerIsOnline"))
-            .catch(this.error)
+    // flowTriggerIsOnline(tokens) {
+    //     this._flowTriggerIsOnline
+    //         .trigger(tokens)
+    //         .then(this.log("flowTriggerIsOnline"))
+    //         .catch(this.error)
+    // }
+    // flowTriggerIsOffline(tokens) {
+    //     this._flowTriggerIsOffline
+    //         .trigger(tokens)
+    //         .then(this.log("flowTriggerIsOffline"))
+    //         .catch(this.error)
+    // }
+
+    async onAdded() {
+        this.log('MyXBOXFriendDevice has been added');
     }
-    flowTriggerIsOffline(tokens) {
-        this._flowTriggerIsOffline
-            .trigger(tokens)
-            .then(this.log("flowTriggerIsOffline"))
-            .catch(this.error)
+
+    async onSettings({ oldSettings: { }, newSettings: { }, changedKeys: { } }) {
+        this.log('MyXBOXFriendDevice settings where changed');
     }
 
+    async onRenamed(name) {
+        this.log('MyXBOXFriendDevice was renamed');
+    }
 
-    onDeleted() {
-
-        let id = this.getData().id;
-        let name = this.getData().id;
-        let cronName = name;
-        this.log('Unregistering cron:', cronName);
-        Homey.ManagerCron.unregisterTask(cronName, function (err, success) {});
-        this.log('device deleted:', id);
-
+    async onDeleted() {
+        this.log('MyXBOXFriendDevice has been deleted');
+        this.homey.clearInterval(timer);
     } // end onDeleted
-
 
 	pollXboxFriendDevice(settings) {
 		xboxapi.getFriendCurrentData(settings).then(data => {
@@ -97,20 +77,59 @@ class MyXBOXFriendDevice extends Homey.Device {
                         "friend": settings.name
                     };
 
-                    if ( this.getCapabilityValue('onoff') == true && data.state == 'Offline' ) {
-                        this.flowTriggerIsOffline(tokens);
-                    }
-                    if ( this.getCapabilityValue('onoff') == false && data.state == 'Online' ) {
-                        this.flowTriggerIsOnline(tokens);
-                    }
-                    if (data.state == 'Offline') {
+                    // if ( this.getCapabilityValue('onoff') == true && data.state == 'Offline' ) {
+                    //     this.flowTriggerIsOffline(tokens);
+                    // }
+                    // if ( this.getCapabilityValue('onoff') == false && data.state == 'Online' ) {
+                    //     this.flowTriggerIsOnline(tokens);
+                    // }
+
+                    // [
+                    //     {
+                    //       "xuid": "2533274862124205",
+                    //       "state": "Offline",
+                    //       "lastSeen": {
+                    //         "deviceType": "Scarlett",
+                    //         "titleId": "750323071",
+                    //         "titleName": "Home",
+                    //         "timestamp": "2023-03-09T21:53:41.5823197Z"
+                    //       }
+                    //     }
+                    //   ]
+
+                    // {
+                    //     "xuid": "2533274936433615",
+                    //     "state": "Online",
+                    //     "devices": [
+                    //       {
+                    //         "type": "Scarlett",
+                    //         "titles": [
+                    //           {
+                    //             "id": "750323071",
+                    //             "name": "Home",
+                    //             "placement": "Background",
+                    //             "state": "Active",
+                    //             "lastModified": "2023-03-10T20:25:47.1028408Z"
+                    //           },
+                    //           {
+                    //             "id": "2001700854",
+                    //             "name": "Call of Duty®: Modern Warfare® II",
+                    //             "placement": "Full",
+                    //             "state": "Active",
+                    //             "lastModified": "2023-03-10T20:25:47.1028408Z"
+                    //           }
+                    //         ]
+                    //       }
+                    //     ]
+
+                    if (data[0].state == 'Offline') {
                         this.setCapabilityValue('onoff', false);
-                        this.setCapabilityValue('last_seen_date',data.lastSeen.timestamp);
+                        this.setCapabilityValue('last_seen_date',data[0].lastSeen.timestamp.substring(0,16));
                     } else {
                         this.setCapabilityValue('onoff', true);
-                        if (data.devices[0].titles[1] != null) {
-                            this.setCapabilityValue('last_seen_date',data.devices[0].titles[1].lastModified.substring(11,24));
-                            this.setCapabilityValue('activity', data.devices[0].titles[1].name);
+                        if (data[0].devices[0].titles[1] != null) {
+                            this.setCapabilityValue('last_seen_date',data[0].devices[0].titles[1].lastModified.substring(0,16));
+                            this.setCapabilityValue('activity', data[0].devices[0].titles[1].name);
                         } else {
                             this.setCapabilityValue('last_seen_date',"");
                         }

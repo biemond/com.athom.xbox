@@ -1,73 +1,63 @@
-'use strict';
-
 const Homey = require('homey');
 const xboxapi = require('./index.js');
-const { ManagerSettings } = require('homey');
-
-Date.prototype.timeNow = function(){ 
-	return ((this.getHours() < 10)?"0":"") + ((this.getHours()>12)?(this.getHours()-12):this.getHours()) +":"+ ((this.getMinutes() < 10)?"0":"") + this.getMinutes() + " " + ((this.getHours()>12)?('PM'):'AM');
-};
 
 class MyXBOXFriendDriver extends Homey.Driver {
 	
-	onInit() {
+	async onInit() {
 		this.log('MyXBOXFriendDriver has been inited');
 	}
 	
-	onPair( socket ) {
-		let devices = []
-		let apikey = ManagerSettings.get('apikey')
+	async onPair(session) {
+
+		let apikey = this.homey.settings.get('apikey');
 		this.log("key " + apikey);
 
-		socket.on('list_devices', function( data, callback ) {
-			if ( apikey == null ) {
-				devices = [];
-				// socket.emit('list_devices', devices );
-				callback( new Error('Please provide first the apikey in the app settings!') );
+		session.setHandler("list_devices", async function () {
+
+			if ( apikey == null || apikey == '' ) {
+				throw new Error('Please provide first the apikey in the app settings!');
 			} else {
 				// emit when devices are still being searched
-				xboxapi.getUser(apikey).then(data2 => {
+				return xboxapi.getUser(apikey).then(data2 => {
 					console.log("apikey " + apikey);
 					console.log("Received data");
 					console.log("object "+ JSON.stringify(data2));
 					let obj2 = data2;
-					console.log("userId: " + obj2.xuid);
+					console.log("userId: " + obj2.profileUsers[0].id);
 
 					let settings =  { 
-							"userId": obj2.xuid,
-							"apikey": apikey
-						};
+						"userId": obj2.profileUsers[0].id,
+						"apikey": apikey
+					};
 
-					xboxapi.getFriends(settings).then(data => {
-						let currentdate =new Date().timeNow();
-						console.log("refresh now " + currentdate);
-				
+					let devices = [];
+					return xboxapi.getFriends(settings).then(data => {
 						console.log("Received data");
-						console.log("object "+ JSON.stringify(data));
+						// console.log("object "+ JSON.stringify(data));
+                        let friends = data.people;
+						for ( var i = 0; i < friends.length ; i++) {
+							let obj = friends[i];
+							// console.log("object: " + obj);
+							// console.log("id: " + obj.xuid);
+							console.log("Gamertag: " + obj.gamertag);
 
-						for ( var i = 0; i < data.length; i++) {
-							let obj = data[i];
-							console.log("object: " + obj);
-							console.log("id: " + obj.id);
-							console.log("Gamertag: " + obj.Gamertag);
-
-							var device =  { "name": obj.Gamertag,
+							var device =  { "name": obj.gamertag,
 											"data": {
-														"id": obj.id,
-														"name": obj.Gamertag,
+														"id": obj.xuid,
+														"name": obj.gamertag,
 														"apikey": apikey,
-														"userId": obj2.xuid
+														"userId": obj2.profileUsers[0].id
 													}
-												};
+										  };
 							devices.push(device);
-							console.log(devices);
+							// console.log(devices);
 						}	
-						socket.emit('list_devices', devices );
-						callback( null, devices );
+						return devices;
 					})
 				})				
 				.catch(error => {
-						this.log(error);
+					this.log(error);
+					// throw new error;
 				});
 			}
 		});

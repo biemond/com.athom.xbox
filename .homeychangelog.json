@@ -1,4 +1,7 @@
 {
+  "1.0.0": {
+    "en": "new free api endpoint xbl.io, app based on sdk v3"
+  },  
   "0.0.6": {
     "en": "new api endpoint, they moved to xapi.us, old one is not working anymore, pickup new api key"
   },
