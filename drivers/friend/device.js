@@ -25,28 +25,13 @@ class MyXBOXFriendDevice extends Homey.Device {
           }, RETRY_INTERVAL);
 
         this.pollXboxFriendDevice(settings);
-        // this._flowTriggerIsOnline = this.homey.flow.getDeviceTriggerCard('IsOnline').register();
-        // this._flowTriggerIsOffline = this.homey.flow.getDeviceTriggerCard('IsOffline').register();
 
-        this._conditionIsOnline = this.homey.flow.getConditionCard('is_online').registerRunListener((args, state) => {
-            let result = this.getCapabilityValue('onoff') 
+        let conditionIsOnline = this.homey.flow.getConditionCard('is_online');
+		conditionIsOnline.registerRunListener((args, state) => {
+            const result = this.getCapabilityValue('onoff'); 
             return Promise.resolve(result);
         }); 
     }
-
-    // flow triggers
-    // flowTriggerIsOnline(tokens) {
-    //     this._flowTriggerIsOnline
-    //         .trigger(tokens)
-    //         .then(this.log("flowTriggerIsOnline"))
-    //         .catch(this.error)
-    // }
-    // flowTriggerIsOffline(tokens) {
-    //     this._flowTriggerIsOffline
-    //         .trigger(tokens)
-    //         .then(this.log("flowTriggerIsOffline"))
-    //         .catch(this.error)
-    // }
 
     async onAdded() {
         this.log('MyXBOXFriendDevice has been added');
@@ -69,21 +54,10 @@ class MyXBOXFriendDevice extends Homey.Device {
 		xboxapi.getFriendCurrentData(settings).then(data => {
             let currentdate =new Date().timeNow();
 			this.log("refresh now " + currentdate);
-			console.log("Received data " + JSON.stringify(data));
+			this.log("Received data " + JSON.stringify(data));
             if (data != null){
                 // console.log("last date " +  strUpdateDate.substring(11,24));
                 if (data != null){
-                    let tokens = {
-                        "friend": settings.name
-                    };
-
-                    // if ( this.getCapabilityValue('onoff') == true && data.state == 'Offline' ) {
-                    //     this.flowTriggerIsOffline(tokens);
-                    // }
-                    // if ( this.getCapabilityValue('onoff') == false && data.state == 'Online' ) {
-                    //     this.flowTriggerIsOnline(tokens);
-                    // }
-
                     // [
                     //     {
                     //       "xuid": "2533274862124205",
@@ -122,7 +96,7 @@ class MyXBOXFriendDevice extends Homey.Device {
                     //       }
                     //     ]
 
-                    if (data[0].state == 'Offline') {
+                    if (data[0].state == 'Offline' || data[0].state == 'Away') {
                         this.setCapabilityValue('onoff', false);
                         this.setCapabilityValue('last_seen_date',data[0].lastSeen.timestamp.substring(0,16));
                     } else {
@@ -136,6 +110,18 @@ class MyXBOXFriendDevice extends Homey.Device {
                     }
 
                     this.setCapabilityValue('latest_update_date', currentdate);
+
+                    let tokens = {
+                        "friend": settings.name
+                    };
+
+                    this.log(JSON.stringify(data[0]));
+                    if ( this.getCapabilityValue('onoff') == true && (data[0].state == 'Offline' || data[0].state == 'Away' ) ) {
+                        this.driver.flowTriggerIsOffline(tokens);
+                    }
+                    if ( this.getCapabilityValue('onoff') == false && data[0].state == 'Online' ) {
+                        this.driver.flowTriggerIsOnline(tokens);
+                    }                    
                 }
             }
 		})

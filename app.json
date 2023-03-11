@@ -5,26 +5,26 @@
   "sdk": 3,
   "brandColor": "#20df30",
   "platforms": [
-    "local"
+    "cloud"
   ],
   "name": {
     "en": "XBOX"
-  },  
+  },
   "description": {
     "en": "Find current status of your XBOX friends and turn on your Xbox One"
   },
-	"tags": {
-		"en": [
-			"xbox",
-			"microsoft",
-			"friends"
-		]
-  },  
+  "tags": {
+    "en": [
+      "xbox",
+      "microsoft",
+      "friends"
+    ]
+  },
   "bugs": {
-		"url": "https://github.com/biemond/com.athom.xbox/issues"
-	},
-	"source": "https://github.com/biemond/com.athom.xbox",
-	"support": "mailto:biemond@gmail.com",  
+    "url": "https://github.com/biemond/com.athom.xbox/issues"
+  },
+  "source": "https://github.com/biemond/com.athom.xbox",
+  "support": "mailto:biemond@gmail.com",
   "category": [
     "internet",
     "appliances"
@@ -46,89 +46,89 @@
       }
     ]
   },
-	"capabilities": {
-		"latest_update_date": {
-			"type": "string",
-			"title": {
-				"en": "Latest update date"
-			},
-			"getable": true,
-			"setable": false,
-			"icon": "/assets/images/clock.svg"
-    },
-		"onoff": {
-			"type": "boolean",
-			"title": {
-				"en": "Is online"
-			},
-			"getable": true,
+  "capabilities": {
+    "latest_update_date": {
+      "type": "string",
+      "title": {
+        "en": "Latest update date"
+      },
+      "getable": true,
       "setable": false,
-      "uiQuickAction": true     
+      "icon": "/assets/images/clock.svg"
     },
-		"last_seen_date": {
-			"type": "string",
-			"title": {
-				"en": "Last seen date UTC"
-			},
-			"getable": true,
-			"setable": false,
-			"icon": "/assets/images/clock.svg"
+    "onoff": {
+      "type": "boolean",
+      "title": {
+        "en": "Is online"
+      },
+      "getable": true,
+      "setable": false,
+      "uiQuickAction": false
+    },
+    "last_seen_date": {
+      "type": "string",
+      "title": {
+        "en": "Last seen date UTC"
+      },
+      "getable": true,
+      "setable": false,
+      "icon": "/assets/images/clock.svg"
     },
     "activity": {
-			"type": "string",
-			"title": {
-				"en": "Last/Current activity"
-			},
-			"getable": true,
-			"setable": false
-    }    
+      "type": "string",
+      "title": {
+        "en": "Last/Current activity"
+      },
+      "getable": true,
+      "setable": false
+    }
   },
-	"flow": {
-		"triggers": [
+  "flow": {
+    "triggers": [
       {
-				"id": "IsOnline",
-				"title": {
-					"en": "When a XBOX friend is online"
-				},
-				"hint": {
-					"en": "Triggers when a XBOX friend is online"
-				},
-				"tokens": [
+        "id": "IsOnline",
+        "title": {
+          "en": "When a XBOX friend is online"
+        },
+        "hint": {
+          "en": "Triggers when a XBOX friend is online"
+        },
+        "tokens": [
           {
-						"name": "friend",
-						"type": "string",
-						"title": {
-							"en": "Friend"
-						},
-						"example": {
-							"en": "My XBOX friend"
-						}
-					}
-				]
+            "name": "friend",
+            "type": "string",
+            "title": {
+              "en": "Friend"
+            },
+            "example": {
+              "en": "My XBOX friend"
+            }
+          }
+        ]
       },
       {
-				"id": "IsOffline",
-				"title": {
-					"en": "When a XBOX friend is offline"
-				},
-				"hint": {
-					"en": "Triggers when a XBOX friend is offline"
-				},
-				"tokens": [
+        "id": "IsOffline",
+        "title": {
+          "en": "When a XBOX friend is offline"
+        },
+        "hint": {
+          "en": "Triggers when a XBOX friend is offline"
+        },
+        "tokens": [
           {
-						"name": "friend",
-						"type": "string",
-						"title": {
-							"en": "Friend"
-						},
-						"example": {
-							"en": "My XBOX friend"
-						}
-					}
-				]
+            "name": "friend",
+            "type": "string",
+            "title": {
+              "en": "Friend"
+            },
+            "example": {
+              "en": "My XBOX friend"
+            }
+          }
+        ]
       }
     ],
-		"conditions": [
+    "conditions": [
       {
         "id": "is_online",
         "title": {
@@ -137,15 +137,16 @@
         "hint": {
           "en": "Friend's online status"
         },
-        "args": [{
-            "name": "friend",
+        "args": [
+          {
+            "name": "device",
             "type": "device",
             "filter": "driver_id=friend"
           }
         ]
       }
     ]
-  },      
+  },
   "drivers": [
     {
       "id": "friend",
@@ -153,21 +154,21 @@
         "en": "XBOX Friend"
       },
       "pair": [
-          {
-            "id": "list_devices",
-            "template": "list_devices",
-            "navigation": {
-              "next": "add_devices"
-            },
-            "options": {
-              "singular": true
-            }
+        {
+          "id": "list_devices",
+          "template": "list_devices",
+          "navigation": {
+            "next": "add_devices"
           },
-          {
-            "id": "add_devices",
-            "template": "add_devices"
+          "options": {
+            "singular": true
           }
-		  ],
+        },
+        {
+          "id": "add_devices",
+          "template": "add_devices"
+        }
+      ],
       "class": "other",
       "capabilities": [
         "latest_update_date",
@@ -177,7 +178,7 @@
       ],
       "energy": {
         "approximation": {
-          "usageOn": 0, 
+          "usageOn": 0,
           "usageOff": 0
         }
       },

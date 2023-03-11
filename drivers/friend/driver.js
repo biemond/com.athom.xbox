@@ -5,8 +5,25 @@ class MyXBOXFriendDriver extends Homey.Driver {
 	
 	async onInit() {
 		this.log('MyXBOXFriendDriver has been inited');
+
+		this._flowTriggerIsOnline = this.homey.flow.getTriggerCard('IsOnline');
+        this._flowTriggerIsOffline = this.homey.flow.getTriggerCard('IsOffline');
 	}
-	
+
+    // flow triggers
+    flowTriggerIsOnline(tokens) {
+        this._flowTriggerIsOnline
+            .trigger(tokens)
+            .then(this.log("flowTriggerIsOnline"))
+            .catch(this.error)
+    }
+    flowTriggerIsOffline(tokens) {
+        this._flowTriggerIsOffline
+            .trigger(tokens)
+            .then(this.log("flowTriggerIsOffline"))
+            .catch(this.error)
+    }	
+
 	async onPair(session) {
 
 		let apikey = this.homey.settings.get('apikey');
