@@ -5,7 +5,7 @@
   "sdk": 3,
   "brandColor": "#20df30",
   "platforms": [
-    "cloud"
+    "local"
   ],
   "name": {
     "en": "XBOX"
