@@ -1,45 +1,47 @@
 <!doctype html>
 <html>
-    <head>
-        <script type="text/javascript" src="/homey.js" data-origin="settings"></script>
-    </head>
-    <body>
-        <h1 data-i18n="settings.title">
-        </h1>
-        <p data-i18n="settings.subtitle">
-        </p>
+<head>
+    <script type="text/javascript" src="/homey.js" data-origin="settings"></script>
+</head>
+<body>
+    <header class="homey-header">
+        <h1 class="homey-title" data-i18n="settings.title"></h1>
+        <p class="homey-subtitle" data-i18n="settings.subtitle"></p>
+    </header>
 
-        <fieldset>
-            <legend>My Settings</legend>
-            <div class="field row">
-                <label for="api">apikey</label>
-                <input id="apikey" type="text" value="" />
+    <!-- <form class="homey-form"> -->
+        <fieldset class="homey-form-fieldset">
+            <legend class="homey-form-legend">XBOX Settings</legend>
+            <div class="homey-form-group">
+                <label class="homey-form-label" for="api">API key</label>
+                <input class="homey-form-input" id="apikey" type="text" value="" />
             </div>
         </fieldset>
+        <button id="save" class="homey-button-primary">Save changes</button>
+    <!-- </form> -->
 
-        <button id="save" class="right">Save changes</button>
+    <script type="text/javascript">
 
-        <script type="text/javascript">
-
-        function onHomeyReady( Homey ){
+        function onHomeyReady(Homey) {
 
             Homey.ready();
 
             var apikeyElement = document.getElementById('apikey');
             var saveElement = document.getElementById('save');
 
-            Homey.get('apikey', function( err, apikey ) {
-               if( err ) return Homey.alert( err );
-               apikeyElement.value = apikey;
+            Homey.get('apikey', function (err, apikey) {
+                if (err) return Homey.alert(err);
+                apikeyElement.value = apikey;
             });
 
-            saveElement.addEventListener('click', function(e) {
-                Homey.set('apikey', apikeyElement.value, function( err ){
-                    if( err ) return Homey.alert( err );
+            saveElement.addEventListener('click', function (e) {
+                Homey.set('apikey', apikeyElement.value, function (err) {
+                    if (err) return Homey.alert(err);
                 });
             });
         }
-        </script>
+    </script>
 
-    </body>
+</body>
+
 </html>
